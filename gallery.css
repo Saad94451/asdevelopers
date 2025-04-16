@@ -1,0 +1,930 @@
+/* Variables */
+:root {
+    --primary-color: #ff0000;
+    --secondary-color: #1a1a1a;
+    --dark-color: #000000;
+    --light-color: #ffffff;
+    --gradient-red: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+    --box-shadow: 0 10px 20px rgba(255, 0, 0, 0.15);
+    --transition: all 0.3s ease;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background: var(--dark-color);
+    color: var(--light-color);
+}
+
+/* Hero Banner */
+.hero-banner {
+    height: 50vh;
+    background: var(--gradient-red);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    animation: fadeInUp 1s ease;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Filter Buttons */
+.filter-container {
+    text-align: center;
+    padding: 2rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.filter-btn {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--light-color);
+    padding: 0.8rem 1.5rem;
+    margin: 0.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary-color);
+    color: var(--light-color);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+/* Gallery Grid */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.gallery-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-item-inner {
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.item-overlay {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.9);
+    transition: var(--transition);
+    backdrop-filter: blur(5px);
+}
+
+.gallery-item:hover .item-overlay {
+    bottom: 0;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.item-overlay h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.item-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.preview-btn,
+.download-btn {
+    background: var(--primary-color);
+    color: var(--light-color);
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.preview-btn:hover,
+.download-btn:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+/* Social Actions */
+.item-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.like-btn,
+.comment-btn {
+    background: transparent;
+    border: none;
+    color: var(--light-color);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.like-btn:hover,
+.comment-btn:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.like-btn.liked {
+    color: var(--primary-color);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    height: calc(100vh - 4rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.modal-content.loaded {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.modal-content.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.modal-content img {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.modal-caption {
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.modal-download-btn {
+    position: relative;
+    display: block;
+    margin: 1rem auto;
+    background: var(--primary-color);
+    color: var(--light-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.modal-download-btn:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+.close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: var(--light-color);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 1001;
+}
+
+.close-modal:hover {
+    color: var(--primary-color);
+    transform: rotate(90deg);
+}
+
+/* Enhanced Comments Modal Styles */
+.comments-container {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(0, 0, 0, 0.95));
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-height: 85vh;
+    overflow-y: auto;
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.modal.show .comments-container {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.comments-container h3 {
+    font-size: 1.8rem;
+    color: var(--light-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.comments-container h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.comments-list {
+    margin: 2rem 0;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+    scroll-behavior: smooth;
+}
+
+.comments-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--primary-color), #cc0000);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.comments-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #ff1a1a, #e60000);
+}
+
+.comment {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+    transform-origin: top;
+    animation: commentSlideIn 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.comment:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.comment p {
+    color: var(--light-color);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.comment-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comment-meta span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.comment-like {
+    background: transparent;
+    border: none;
+    color: var(--light-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.comment-like:hover {
+    background: rgba(255, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+.comment-like.liked {
+    color: var(--primary-color);
+    background: rgba(255, 0, 0, 0.15);
+}
+
+.comment-form {
+    margin-top: 2rem;
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--light-color);
+    resize: vertical;
+    min-height: 120px;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 4px rgba(255, 0, 0, 0.1);
+}
+
+.comment-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.submit-comment {
+    background: linear-gradient(135deg, var(--primary-color), #cc0000);
+    color: var(--light-color);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-comment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.submit-comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+    background: linear-gradient(135deg, #ff1a1a, #e60000);
+}
+
+.submit-comment:hover::before {
+    transform: translateX(100%);
+}
+
+.submit-comment:active {
+    transform: translateY(1px);
+}
+
+@keyframes commentSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced Loading States */
+.comment-loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--light-color);
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.comment-loading::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.no-comments {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--light-color);
+    opacity: 0.7;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    margin: 1rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced Input Animations */
+.comment-form textarea.error {
+    border-color: #ff0000;
+    animation: shakeError 0.5s ease;
+}
+
+.comment-form textarea.success {
+    border-color: #00ff00;
+    animation: successPulse 0.5s ease;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+@keyframes successPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.2); }
+    50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+}
+
+/* Download Notification */
+.download-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: var(--light-color);
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    animation: slideIn 0.3s ease;
+    z-index: 1000;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .gallery-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .gallery-item img {
+        height: 250px;
+    }
+
+    .item-overlay {
+        position: static;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 1rem;
+    }
+
+    .item-overlay h3 {
+        font-size: 1.2rem;
+    }
+
+    .preview-btn,
+    .download-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .filter-container {
+        padding: 1rem;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .filter-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .comments-container {
+        width: 95%;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .item-overlay {
+        position: static;
+        background: rgba(0, 0, 0, 0.95);
+    }
+
+    .gallery-item:hover img {
+        transform: none;
+    }
+
+    .preview-btn:hover,
+    .download-btn:hover,
+    .like-btn:hover,
+    .comment-btn:hover {
+        transform: none;
+    }
+}
+
+/* Loading Animation */
+.gallery-item.loading {
+    animation: shimmer 1.5s infinite;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Heart Animation */
+.floating-heart {
+    position: absolute;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    pointer-events: none;
+    animation: floatUp 1s ease forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Download Progress */
+.download-notification {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 200px;
+}
+
+.download-progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--light-color);
+    transition: width 0.3s ease;
+}
+
+.download-notification.error {
+    background: #ff0000;
+}
+
+.download-notification.error .progress-bar {
+    background: #ff3333;
+}
+
+/* Filter Button Improvements */
+.filter-container {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.filter-btn:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+/* Gallery Item Hover Effects */
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, var(--primary-color) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gallery-item:hover::after {
+    opacity: 0.2;
+}
+
+/* Improved Loading Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.gallery-item.loading {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.1) 40%
+    );
+    background-size: 200% 100%;
+}
+
+/* Comments Modal Close Button */
+.comments-container .close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--light-color);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.comments-container .close-modal:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+}
+
+.comments-container .close-modal:active {
+    transform: rotate(90deg) scale(0.95);
+}
+
+/* Update Comments Container Padding */
+.comments-container {
+    padding-top: 3.5rem;
+}
+
+/* Mobile Responsive Close Button */
+@media (max-width: 768px) {
+    .comments-container .close-modal {
+        top: 0.8rem;
+        right: 0.8rem;
+        width: 28px;
+        height: 28px;
+        font-size: 1.2rem;
+    }
+    
+    .comments-container {
+        padding-top: 3rem;
+    }
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--primary-color), #cc0000);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #ff1a1a, #e60000);
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) rgba(255, 255, 255, 0.05);
+} 
